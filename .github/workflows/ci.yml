@@ -9,6 +9,9 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
+        env:
+            ENVIRONMENT: development
+            DATABASE_URL: postgresql+psycopg://chatbot_user:chatbot_pass@localhost:5432/chatbot_db
         steps:
           - name: Checkout code
             uses: actions/checkout@v4
