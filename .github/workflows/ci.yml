@@ -31,6 +31,10 @@ jobs:
       JWT_SECRET_KEY: ci-test-secret-key-not-used-in-production
       JWT_ALGORITHM: HS256
       JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      AWS_ACCESS_KEY_ID: fake-ci-key
+      AWS_SECRET_ACCESS_KEY: fake-ci-secret
+      AWS_REGION: us-east-1
+      S3_BUCKET_NAME: fake-ci-bucket
 
     steps:
       - name: Checkout code
