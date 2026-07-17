@@ -12,3 +12,4 @@ bcrypt==4.0.1
 python-multipart
 pydantic[email]
 boto3
+python-dotenv
