@@ -36,6 +36,9 @@ jobs:
       AWS_SECRET_ACCESS_KEY: fake-ci-secret
       AWS_REGION: us-east-1
       S3_BUCKET_NAME: fake-ci-bucket
+      GEMINI_API_KEY: fake-ci-gemini-key
+      GEMINI_EMBEDDING_MODEL: models/gemini-embedding-001
+      GEMINI_CHAT_MODEL: gemini-2.5-flash
 
     steps:
       - name: Checkout code
@@ -53,6 +56,7 @@ jobs:
         run: |
           sudo apt-get install -y postgresql-client
           PGPASSWORD=chatbot_pass psql -h localhost -U chatbot_user -d chatbot_db -c "CREATE DATABASE chatbot_test_db;"
-
+          PGPASSWORD=chatbot_pass psql -h localhost -U chatbot_user -d chatbot_test_db -c "CREATE EXTENSION IF NOT EXISTS vector;"
+          
       - name: Run tests
         run: pytest

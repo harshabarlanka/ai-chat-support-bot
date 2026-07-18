@@ -3,7 +3,7 @@ import os
 import pytest
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base, get_db
@@ -15,6 +15,10 @@ TEST_DATABASE_URL = os.environ["TEST_DATABASE_URL"]
 
 engine = create_engine(TEST_DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+with engine.connect() as connection:
+    connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+    connection.commit()
 
 
 @pytest.fixture()
