@@ -38,7 +38,7 @@ jobs:
       S3_BUCKET_NAME: fake-ci-bucket
       GEMINI_API_KEY: fake-ci-gemini-key
       GEMINI_EMBEDDING_MODEL: models/gemini-embedding-001
-      GEMINI_CHAT_MODEL: gemini-2.5-flash
+      GEMINI_CHAT_MODEL: gemini-flash-latest
 
     steps:
       - name: Checkout code

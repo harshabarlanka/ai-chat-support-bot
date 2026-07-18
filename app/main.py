@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 
 from app.config import settings
-from app.routers import auth, documents, search, users
+from app.routers import auth, chat, documents, search, users
 app = FastAPI(title="AI Chat Support Bot")
-
 
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(documents.router)
 app.include_router(search.router)
+app.include_router(chat.router)
 
 @app.get("/health")
 def health_check():
