@@ -13,3 +13,5 @@ python-multipart
 pydantic[email]
 boto3
 python-dotenv
+pypdf
+httpx2
