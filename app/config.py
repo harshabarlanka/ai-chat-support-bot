@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     gemini_api_key: str
     gemini_embedding_model: str = "models/gemini-embedding-001"
-    gemini_chat_model: str = "gemini-2.5-flash"
+    gemini_chat_model: str = "gemini-flash-latest"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
