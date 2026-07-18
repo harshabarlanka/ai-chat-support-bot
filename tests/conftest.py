@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-from app.database import Base, get_db
+from app.database import Base, get_db, get_session_factory
 from app.main import app
 
 load_dotenv()
@@ -41,5 +41,6 @@ def client(db_session):
             pass
 
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_session_factory] = lambda: TestingSessionLocal
     yield TestClient(app)
     app.dependency_overrides.clear()

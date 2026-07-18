@@ -1,9 +1,9 @@
 import uuid
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
-from app.database import get_db
+from app.database import get_db, get_session_factory
 from app.dependencies import get_current_user
 from app.models.document import Document
 from app.models.user import User
@@ -22,6 +22,7 @@ async def upload_document(
     file: UploadFile,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
+    session_factory: sessionmaker = Depends(get_session_factory),
 ):
     if file.content_type != "application/pdf":
         raise HTTPException(
@@ -52,7 +53,7 @@ async def upload_document(
     db.commit()
     db.refresh(document)
 
-    background_tasks.add_task(process_document, document.id)
+    background_tasks.add_task(process_document, document.id, session_factory)
 
     return document
 
