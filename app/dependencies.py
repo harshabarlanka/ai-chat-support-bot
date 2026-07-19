@@ -1,5 +1,5 @@
 import uuid
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, WebSocket, WebSocketException,status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from sqlalchemy.orm import Session
@@ -25,4 +25,17 @@ def get_current_user(
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise credentials_exception
+    return user
+
+def get_current_user_ws(websocket: WebSocket, token: str, db: Session) -> User:
+    try: 
+        user_id_str = decode_access_token(token)
+        user_id = uuid.UUID(user_id_str)
+    except(JWTError, ValueError):
+        raise WebSocketException(code=status.WS_1008_POLICY_VIOLATION)
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None:
+        raise WebSocketException(code=status.WS_1008_POLICY_VIOLATION)
+    
     return user

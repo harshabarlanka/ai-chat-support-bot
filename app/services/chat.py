@@ -34,3 +34,14 @@ def generate_answer(question: str, chunks: list[Chunk]) -> str:
         config={"system_instruction": SYSTEM_INSTRUCTION},
     )
     return response.text
+
+def generate_answer_stream(question: str, chunks: list[Chunk]):
+    prompt = build_prompt(question, chunks)
+    stream = _client.models._generate_content_stream(
+        model = settings.gemini_chat_model,
+        contents=prompt,
+        config={"system_instruction": SYSTEM_INSTRUCTION}
+    )
+    for event in stream:
+        if event.text:
+            yield event.text
