@@ -12,3 +12,10 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     answer: str
     sources: list[ChunkResult]
+
+class ChatComparisonResponse(BaseModel):
+    question: str
+    vector_answer: str
+    vector_sources: list[ChunkResult]
+    graph_answer: str
+    graph_sources: list[ChunkResult]

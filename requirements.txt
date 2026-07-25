@@ -18,3 +18,4 @@ httpx2
 google-genai
 pgvector
 mcp
+neo4j
