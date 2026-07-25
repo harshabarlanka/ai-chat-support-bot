@@ -13,9 +13,33 @@ from app.schemas.chat_message import ChatMessageResponse
 from app.services.chat import generate_answer, generate_answer_stream
 from app.services.conversation import rewrite_query
 from app.services.retrieval import retrieve_relevant_chunks
+from app.schemas.chat import ChatComparisonResponse
+from app.services.graph_retrieval import retrieve_relevant_chunks_via_graph
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
+
+@router.post("/compare", response_model=ChatComparisonResponse)
+def compare_retrieval_methods(
+    request: ChatRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    vector_chunks = retrieve_relevant_chunks(db=db, user_id=current_user.id, query=request.question)
+    vector_answer = generate_answer(question=request.question, chunks=vector_chunks)
+
+    graph_chunks = retrieve_relevant_chunks_via_graph(
+        db=db, user_id=current_user.id, question=request.question
+    )
+    graph_answer = generate_answer(question=request.question, chunks=graph_chunks)
+
+    return ChatComparisonResponse(
+        question=request.question,
+        vector_answer=vector_answer,
+        vector_sources=vector_chunks,
+        graph_answer=graph_answer,
+        graph_sources=graph_chunks,
+    )
 
 @router.post("/", response_model=ChatResponse)
 def chat(

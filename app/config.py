@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     gemini_embedding_model: str = "models/gemini-embedding-001"
     gemini_chat_model: str = "gemini-flash-latest"
 
+    neo4j_uri: str
+    neo4j_user: str
+    neo4j_password: str
+    
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
