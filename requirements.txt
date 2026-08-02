@@ -17,5 +17,5 @@ pypdf
 httpx2
 google-genai
 pgvector
-mcp
+mcp==1.28.1
 neo4j
